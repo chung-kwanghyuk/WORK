@@ -1,0 +1,22 @@
+SELECT
+A.EXM_CD "검사코드"
+,A.CD_NM "검사항목"
+,A.EXRM_TP_CD  "검사실"
+,(SELECT  EXM_GRP_DTL_CD_NM FROM MSERMCCC
+ 	 WHERE HSP_TP_CD  = '01'
+     AND ORD_CTG_CD = 'BR1'
+	   AND EXM_GRP_CD = '900'
+	   AND EXM_GRP_DTL_CD = A.RDLG_STTS_CTG_CD
+     AND USE_YN ='Y'
+  ) "통계코드"
+,A.MIF_CD            "수가명"
+,A.MDAL_KND_CD       "Modality"
+,C.ADOP_PSB_YN       "처방가능"
+FROM MSERMMMC A
+,CCOOCBAC C
+WHERE A.ORD_CTG_CD = 'BR1'
+-- AND A.EXM_CD = 'RM008A'   -- 코드???
+AND A.HSP_TP_CD = '01'
+AND A.HSP_TP_CD     = C.HSP_TP_CD
+AND A.EXM_CD        = C.ORD_CD
+;
